@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { ThirdwebProvider } from "thirdweb/react";
+import '@/shared/style/globals.css';
+
+import { Inter } from 'next/font/google';
+import { ThirdwebProvider } from 'thirdweb/react';
 
 const inter = Inter({ subsets: ["latin"] });
 

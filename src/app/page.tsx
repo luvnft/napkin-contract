@@ -1,7 +1,8 @@
-import Image from "next/image";
-import { ConnectButton } from "thirdweb/react";
-import thirdwebIcon from "@public/thirdweb.svg";
-import { client } from "./client";
+import Image from 'next/image';
+import { ConnectButton } from 'thirdweb/react';
+
+import { client } from '@/shared/const';
+import thirdwebIcon from '@public/thirdweb.svg';
 
 export default function Home() {
   return (
