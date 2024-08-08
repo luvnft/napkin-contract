@@ -34,7 +34,7 @@ export const Contract = ({ id }: PropTypes) => {
           }}
           value={contractText}
           maxLength={5000}
-          className="resize-none h-full sm:h-[459px] sm:max-h-[459px] w-full p-2 border rounded border-none overflow-hidden text-black text-2xl"
+          className="resize-none h-full sm:h-[459px] sm:max-h-[459px] w-full p-2 border-0 outline-0 rounded border-none overflow-hidden text-black text-2xl"
         />
       </MainWrapper>
     );
