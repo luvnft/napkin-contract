@@ -10,7 +10,7 @@ export const MainWrapper = ({ title, children, submitButton }: PropTypes) => (
     <h3 className="h-16 flex items-center justify-center text-black text-2xl font-semibold">
       {title}
     </h3>
-    <div className="flex-grow min-h-0 p-2">{children}</div>
+    <div className="flex-grow min-h-0 p-2 px-5">{children}</div>
     {submitButton ? (
       <div className="w-full h-[90px] flex items-center justify-center shrink-0">
         {submitButton}
