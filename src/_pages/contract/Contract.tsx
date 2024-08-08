@@ -1,9 +1,10 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Button } from '@/shared/components';
-import { MainWrapper } from '@/shared/components/main-wrapper/MainWrapper';
+import { Button, MainWrapper } from '@/shared/components';
+import { useAppDispatch } from '@/shared/store/hook';
+import { initialize, updateContract } from '@/shared/store/slice/contract';
 
 type PropTypes = {
   id?: string;
@@ -11,12 +12,18 @@ type PropTypes = {
 export const Contract = ({ id }: PropTypes) => {
   const [contractText, setContractText] = useState('');
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(initialize());
+  }, []);
 
   if (!id) {
     //new contract page
     const submitButton = (
       <Button
         onClick={() => {
+          dispatch(updateContract({ data: { text: contractText } }));
           alert('Signed');
           router.push('/auth', { scroll: false });
         }}
