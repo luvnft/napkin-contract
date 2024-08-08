@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Button } from '@/shared/components';
@@ -9,10 +10,19 @@ type PropTypes = {
 };
 export const Contract = ({ id }: PropTypes) => {
   const [contractText, setContractText] = useState('');
+  const router = useRouter();
 
   if (!id) {
     //new contract page
-    const submitButton = <Button onClick={() => alert('Signed')} title="Sign" />;
+    const submitButton = (
+      <Button
+        onClick={() => {
+          alert('Signed');
+          router.push('/auth', { scroll: false });
+        }}
+        title="Sign"
+      />
+    );
 
     return (
       <MainWrapper title="Fill Contract" submitButton={submitButton}>
