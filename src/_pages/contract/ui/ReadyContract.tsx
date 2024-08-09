@@ -27,7 +27,10 @@ export const ReadyContract = () => {
 
   return (
     <MainWrapper title="Contract" submitButton={submitButton}>
-      <div className="resize-none h-full sm:h-[459px] sm:max-h-[459px] w-full p-2 border-0 outline-0 rounded border-none overflow-y-scroll text-black text-2xl">
+      <div
+        style={{ scrollbarWidth: 'none' }}
+        className="resize-none h-full sm:h-[459px] sm:max-h-[459px] w-full p-2 border-0 outline-0 rounded border-none overflow-y-scroll text-black text-2xl"
+      >
         {contractText}
       </div>
     </MainWrapper>

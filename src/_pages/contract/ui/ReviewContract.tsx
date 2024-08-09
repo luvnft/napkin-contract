@@ -27,7 +27,10 @@ export const ReviewContract = () => {
 
   return (
     <MainWrapper title="Request signing" submitButton={submitButton}>
-      <div className="resize-none h-full sm:h-80 sm:max-h-80 w-full p-2 border-0 outline-0 rounded border-none overflow-y-scroll text-black text-2xl">
+      <div
+        className="resize-none h-full sm:h-80 sm:max-h-80 w-full p-2 border-0 outline-0 rounded border-none overflow-y-scroll text-black text-2xl"
+        style={{ scrollbarWidth: 'none' }}
+      >
         {contractText}
       </div>
     </MainWrapper>
