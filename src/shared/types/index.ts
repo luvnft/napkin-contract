@@ -1,6 +1,9 @@
-export type Signee = {
+export type User = {
   id: string;
-  fullname: string;
+  fullname: 
+}
+
+export type Signee = User & {
   dateSigned: string;
 };
 
