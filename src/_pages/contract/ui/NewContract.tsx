@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 import { Button, MainWrapper } from '@/shared/components';
 import { useAppDispatch, useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
-import { initialize, updateContract } from '@/shared/store/slice/contract';
+import { userSelector } from '@/shared/store/selector/user';
+import { initializeContract, updateContract } from '@/shared/store/slice/contract';
+import { initializeAlice } from '@/shared/store/slice/user';
 
 export const NewContract = () => {
   const [contractText, setContractText] = useState('');
@@ -12,9 +14,11 @@ export const NewContract = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const contract = useAppSelector(contractSelector);
+  const currentUser = useAppSelector(userSelector);
 
   useEffect(() => {
-    dispatch(initialize());
+    dispatch(initializeContract());
+    dispatch(initializeAlice());
   }, []);
 
   useEffect(() => {
@@ -30,7 +34,7 @@ export const NewContract = () => {
               id: '1',
               text: contractText,
               dateCreated: new Date().toISOString(),
-              signees: [],
+              signees: [{ ...currentUser, dateSigned: new Date().toISOString() }],
             },
           }),
         );

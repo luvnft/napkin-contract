@@ -16,7 +16,7 @@ const slice = createSlice({
   name: 'contract',
   initialState: initialState,
   reducers: {
-    initialize: (state) => {
+    initializeContract: (state) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
@@ -37,6 +37,6 @@ const slice = createSlice({
   },
 });
 
-export const { initialize, updateContract } = slice.actions;
+export const { initializeContract, updateContract } = slice.actions;
 
 export default slice.reducer;
