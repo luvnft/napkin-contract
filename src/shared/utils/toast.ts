@@ -1,7 +1,7 @@
 import { Bounce, toast, ToastOptions } from 'react-toastify';
 
 const toastOptions: ToastOptions = {
-  position: 'bottom-center',
+  position: 'top-center',
   autoClose: 5000,
   hideProgressBar: false,
   closeOnClick: true,
