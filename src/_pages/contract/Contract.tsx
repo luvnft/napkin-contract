@@ -3,9 +3,10 @@
 import { NewContract, ReadyContract, ReviewContract, ShareContract } from './ui';
 
 type PropTypes = {
-  pageType: 'new' | 'review' | 'share' | 'ready';
+  pageType: 'new' | 'review' | 'ready' | 'share';
+  id?: string;
 };
-export const Contract = ({ pageType }: PropTypes) => {
+export const Contract = ({ pageType, id }: PropTypes) => {
   if (pageType === 'new') {
     return <NewContract />;
   }
@@ -14,12 +15,12 @@ export const Contract = ({ pageType }: PropTypes) => {
     return <ReviewContract />;
   }
 
-  if (pageType === 'share') {
-    return <ShareContract />;
+  if (pageType === 'ready') {
+    return <ReadyContract id={id} />;
   }
 
-  if (pageType === 'ready') {
-    return <ReadyContract />;
+  if (pageType === 'share') {
+    return <ShareContract />;
   }
 
   return null;

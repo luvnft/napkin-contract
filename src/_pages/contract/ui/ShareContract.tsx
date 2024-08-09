@@ -2,17 +2,20 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { Button, MainWrapper } from '@/shared/components';
+import { useAppSelector } from '@/shared/store/hook';
+import { contractSelector } from '@/shared/store/selector/contract';
 import { toastSuccess } from '@/shared/utils/toast';
 import qrCode from '@public/qrcode.png';
 
 export const ShareContract = () => {
   const router = useRouter();
+  const currentContract = useAppSelector(contractSelector);
 
   const submitButton = (
     <Button
       onClick={() => {
         toastSuccess('Shared');
-        router.push('/contract/ready', { scroll: false });
+        router.push(`/contract/${currentContract.id}`, { scroll: false });
       }}
       title="Done"
     />
