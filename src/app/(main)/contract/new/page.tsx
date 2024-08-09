@@ -1,5 +1,5 @@
-import { Contract } from "@/_pages";
+import { Contract } from '@/_pages';
 
 export default function ContactPage() {
-  return <Contract />;
+  return <Contract pageType="new" />;
 }
