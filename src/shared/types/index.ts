@@ -1,7 +1,7 @@
 export type User = {
   id: string;
-  fullname: 
-}
+  fullname: string;
+};
 
 export type Signee = User & {
   dateSigned: string;
