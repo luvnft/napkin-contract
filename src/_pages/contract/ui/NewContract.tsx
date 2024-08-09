@@ -2,7 +2,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { Button, MainWrapper } from '@/shared/components';
-import { useAppDispatch } from '@/shared/store/hook';
+import { useAppDispatch, useAppSelector } from '@/shared/store/hook';
+import { contractSelector } from '@/shared/store/selector/contract';
 import { initialize, updateContract } from '@/shared/store/slice/contract';
 
 export const NewContract = () => {
@@ -10,15 +11,29 @@ export const NewContract = () => {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const contract = useAppSelector(contractSelector);
 
   useEffect(() => {
     dispatch(initialize());
   }, []);
 
+  useEffect(() => {
+    setContractText(contract.text);
+  }, [contract]);
+
   const submitButton = (
     <Button
       onClick={() => {
-        dispatch(updateContract({ data: { text: contractText } }));
+        dispatch(
+          updateContract({
+            data: {
+              id: '1',
+              text: contractText,
+              dateCreated: new Date().toISOString(),
+              signees: [],
+            },
+          }),
+        );
         alert('Signed');
         router.push('/auth', { scroll: false });
       }}
