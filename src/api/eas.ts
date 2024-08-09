@@ -47,6 +47,7 @@ export async function findContractAttestation(uid: string) {
   const easContractAddress = process.env.EAS_CONTRACT_ADDRESS || 'TEST_ADDRESS';
   const eas = new EAS(easContractAddress);
   const provider = ethers.getDefaultProvider('https://sepolia.base.org');
+  // @ts-ignore
   eas.connect(provider);
   const attestation = await eas.getAttestation(uid);
   const schemaEncoder = new SchemaEncoder('string drafterID,string contract');
