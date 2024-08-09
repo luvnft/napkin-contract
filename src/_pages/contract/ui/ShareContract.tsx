@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { Button, MainWrapper } from '@/shared/components';
+import { toastSuccess } from '@/shared/utils/toast';
 import qrCode from '@public/qrcode.png';
 
 export const ShareContract = () => {
@@ -10,7 +11,7 @@ export const ShareContract = () => {
   const submitButton = (
     <Button
       onClick={() => {
-        alert('Shared');
+        toastSuccess('Shared');
         router.push('/contract/ready', { scroll: false });
       }}
       title="Done"

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button, MainWrapper } from '@/shared/components';
 import { useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
+import { toastSuccess } from '@/shared/utils/toast';
 
 export const ReadyContract = () => {
   const [contractText, setContractText] = useState('');
@@ -18,7 +19,7 @@ export const ReadyContract = () => {
   const submitButton = (
     <Button
       onClick={() => {
-        alert('Share');
+        toastSuccess('Shared');
         router.push('/contract/share', { scroll: false });
       }}
       title="Share"

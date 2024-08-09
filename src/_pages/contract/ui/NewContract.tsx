@@ -7,6 +7,7 @@ import { contractSelector } from '@/shared/store/selector/contract';
 import { userSelector } from '@/shared/store/selector/user';
 import { initializeContract, updateContract } from '@/shared/store/slice/contract';
 import { initializeAlice } from '@/shared/store/slice/user';
+import { toastSuccess } from '@/shared/utils/toast';
 
 export const NewContract = () => {
   const [contractText, setContractText] = useState('');
@@ -38,7 +39,7 @@ export const NewContract = () => {
             },
           }),
         );
-        alert('Signed');
+        toastSuccess('Signed');
         router.push('/auth', { scroll: false });
       }}
       title="Sign"

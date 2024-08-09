@@ -2,6 +2,7 @@ import '@/shared/style/globals.css';
 
 import { ReactNode } from 'react';
 
+import { Toast } from '@/shared/components';
 import { Header } from '@/widgets';
 
 import type { Metadata } from 'next';
@@ -20,6 +21,7 @@ export default function MainLayout({
       <Header />
 
       {children}
+      <Toast />
     </>
   );
 }
