@@ -23,7 +23,7 @@ export const Authentication = () => {
   }, []);
 
   useEffect(() => {
-    if (!initialized.current) return;
+    if (!initialized.current && process.env.NODE_ENV === 'development') return;
 
     if (!account?.address) {
       setIsLoading(false);
