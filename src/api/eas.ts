@@ -25,21 +25,21 @@ async function attest(encodedData: string, schemaUID: string, refUID?: string) {
   return newAttestationUID;
 }
 
-export async function createContractAttestation(drafterID: string, contract: string) {
+export async function createContractAttestation(name: string, contract: string) {
   const schemaUID = process.env.NEXT_PUBLIC_CONTRACT_SCHEMA_ID as string;
-  const schemaEncoder = new SchemaEncoder('string drafterID,string contract');
+  const schemaEncoder = new SchemaEncoder('string name,string contract');
   const encodedData = schemaEncoder.encodeData([
-    { name: 'drafterID', value: drafterID, type: 'string' },
+    { name: 'name', value: name, type: 'string' },
     { name: 'contract', value: contract, type: 'string' },
   ]);
   return await attest(encodedData, schemaUID);
 }
 
-export async function signContractAttestation(signatoryID: string, uidContract: string) {
+export async function signContractAttestation(name: string, uidContract: string) {
   const schemaUID = process.env.NEXT_PUBLIC_SIGNATORY_SCHEMA_ID as string;
-  const schemaEncoder = new SchemaEncoder('string signatoryID');
+  const schemaEncoder = new SchemaEncoder('string name');
   const encodedData = schemaEncoder.encodeData([
-    { name: 'signatoryID', value: signatoryID, type: 'string' },
+    { name: 'name', value: name, type: 'string' },
   ]);
   return await attest(encodedData, schemaUID, uidContract);
 }
@@ -51,6 +51,9 @@ export async function findContractAttestation(uid: string) {
   // @ts-ignore
   eas.connect(provider);
   const attestation = await eas.getAttestation(uid);
-  const schemaEncoder = new SchemaEncoder('string drafterID,string contract');
-  return schemaEncoder.decodeData(attestation.data);
+  const schemaEncoder = new SchemaEncoder('string name,string contract');
+  return {
+    createdAt: attestation.time,
+    data: schemaEncoder.decodeData(attestation.data),
+  };
 }
