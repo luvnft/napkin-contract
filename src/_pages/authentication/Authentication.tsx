@@ -16,15 +16,22 @@ export const Authentication = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!account?.address) return;
-
     if (process.env.NODE_ENV == 'development' && !initialized.current) {
       initialized.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!initialized.current) return;
+
+    if (!account?.address) {
+      setIsLoading(false);
       return;
     }
+
     setIsLoading(true);
 
-    postContractAttestation(account?.address, 'Our agreeement terms')
+    postContractAttestation(account.address, 'Our agreeement terms')
       .then(() => {
         // const newAttestationUID = response
         toastSuccess('new contract attestation created');
