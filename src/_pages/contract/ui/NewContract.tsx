@@ -1,5 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Button, MainWrapper } from '@/shared/components';
 import { useAppDispatch, useAppSelector } from '@/shared/store/hook';
@@ -32,7 +33,7 @@ export const NewContract = () => {
         dispatch(
           updateContract({
             data: {
-              id: '1',
+              id: uuidv4(),
               text: contractText,
               dateCreated: new Date().toISOString(),
               signees: [{ ...currentUser, dateSigned: new Date().toISOString() }],

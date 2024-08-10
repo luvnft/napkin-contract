@@ -8,7 +8,7 @@ I, Alice, promise to bring you two bottles of Budweiser every day for 20 days, s
 
 – Alice`,
   dateCreated: '',
-  id: '1',
+  id: '',
   signees: [],
 };
 
@@ -23,7 +23,7 @@ const slice = createSlice({
       // immutable state based off those changes
       state.text = initialState.text;
       state.dateCreated = new Date().toISOString();
-      state.id = '1';
+      state.id = initialState.id;
       state.signees = [];
     },
     updateContract: (state: Contract, action: PayloadAction<{ data: Contract }>) => {
