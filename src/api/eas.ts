@@ -1,11 +1,10 @@
-import { ethers } from 'ethers';
-
 import { EAS, SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
+import { ethers } from 'ethers';
 
 const ETHERS_NETWORK = 'https://sepolia.base.org';
 
 async function attest(encodedData: string, schemaUID: string, refUID?: string) {
-  const privateKey = process.env.NEXT_PUBLIC_PRIVATE_KEY as string;
+  const privateKey = process.env.PRIVATE_KEY as string;
   const easContractAddress = process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS as string;
   const eas = new EAS(easContractAddress);
   const provider = ethers.getDefaultProvider(ETHERS_NETWORK);
