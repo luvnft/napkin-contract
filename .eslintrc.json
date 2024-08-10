@@ -49,8 +49,7 @@
     "@typescript-eslint/restrict-plus-operands": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "no-empty": "off",
-    "no-case-declarations": "off",
-    "printWidth": 1
+    "no-case-declarations": "off"
   },
   "settings": {
     "react": {

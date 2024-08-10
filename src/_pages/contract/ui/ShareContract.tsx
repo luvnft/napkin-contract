@@ -11,8 +11,10 @@ export const ShareContract = () => {
   const router = useRouter();
   const currentContract = useAppSelector(contractSelector);
 
-  const handleQRClick = () => {
-    window.isSecureContext && navigator.clipboard.writeText(`/contract/${currentContract.id}`);
+  const handleQRClick = async () => {
+    if (window.isSecureContext) {
+      await navigator.clipboard.writeText(`/contract/${currentContract.id}`);
+    }
     toastInfo('contract link copied');
   };
 

@@ -1,12 +1,11 @@
-import { ethers } from 'ethers';
-
 import { EAS, SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
+import { ethers } from 'ethers';
 
 const ETHERS_NETWORK = 'https://sepolia.base.org';
 
 async function attest(encodedData: string, schemaUID: string, refUID?: string) {
-  const privateKey = process.env.PRIVATE_KEY;
-  const easContractAddress = process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS;
+  const privateKey = process.env.PRIVATE_KEY as string;
+  const easContractAddress = process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS as string;
   const eas = new EAS(easContractAddress);
   const provider = ethers.getDefaultProvider(ETHERS_NETWORK);
   const signer = new ethers.Wallet(privateKey, provider);
@@ -27,7 +26,7 @@ async function attest(encodedData: string, schemaUID: string, refUID?: string) {
 }
 
 export async function createContractAttestation(drafterID: string, contract: string) {
-  const schemaUID = process.env.NEXT_PUBLIC_CONTRACT_SCHEMA_ID;
+  const schemaUID = process.env.NEXT_PUBLIC_CONTRACT_SCHEMA_ID as string;
   const schemaEncoder = new SchemaEncoder('string drafterID,string contract');
   const encodedData = schemaEncoder.encodeData([
     { name: 'drafterID', value: drafterID, type: 'string' },
@@ -37,7 +36,7 @@ export async function createContractAttestation(drafterID: string, contract: str
 }
 
 export async function signContractAttestation(signatoryID: string, uidContract: string) {
-  const schemaUID = process.env.NEXT_PUBLIC_SIGNATORY_SCHEMA_ID;
+  const schemaUID = process.env.NEXT_PUBLIC_SIGNATORY_SCHEMA_ID as string;
   const schemaEncoder = new SchemaEncoder('string signatoryID');
   const encodedData = schemaEncoder.encodeData([
     { name: 'signatoryID', value: signatoryID, type: 'string' },
@@ -46,7 +45,7 @@ export async function signContractAttestation(signatoryID: string, uidContract: 
 }
 
 export async function findContractAttestation(uid: string) {
-  const easContractAddress = process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS;
+  const easContractAddress = process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS as string;
   const eas = new EAS(easContractAddress);
   const provider = ethers.getDefaultProvider(ETHERS_NETWORK);
   // @ts-ignore
