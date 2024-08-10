@@ -54,6 +54,7 @@ export async function findContractAttestation(uid: string) {
   const schemaEncoder = new SchemaEncoder('string name,string contract');
   return {
     createdAt: attestation.time,
+    recipient: attestation.recipient,
     data: schemaEncoder.decodeData(attestation.data),
   };
 }
