@@ -14,6 +14,7 @@ export const Authentication = () => {
   const account = useActiveAccount();
   const initialized = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [attestationUid, setAttestationUid] = useState('');
 
   useEffect(() => {
     if (process.env.NODE_ENV == 'development' && !initialized.current) {
@@ -32,8 +33,8 @@ export const Authentication = () => {
     setIsLoading(true);
 
     postContractAttestation(account.address, 'Our agreeement terms')
-      .then(() => {
-        // const newAttestationUID = response
+      .then((uid) => {
+        setAttestationUid(uid);
         toastSuccess('new contract attestation created');
       })
       .catch((e) => {
@@ -68,6 +69,18 @@ export const Authentication = () => {
             <Spinner />
           </div>
         )}
+        {!isLoading && attestationUid ? (
+          <span className="text-black">
+            Attestation created, click{' '}
+            <a
+              href={`https://base-sepolia.easscan.org/attestation/view/${attestationUid}`}
+              className="text-indigo-300 hover:text-indigo-500 underline"
+            >
+              here
+            </a>{' '}
+            to open it.
+          </span>
+        ) : null}
       </div>
     </MainWrapper>
   );
