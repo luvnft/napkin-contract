@@ -64,7 +64,7 @@ export const Authentication = () => {
           }}
         />
         {isLoading && (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 text-black">
             <span>Creating attestation...</span>
             <Spinner />
           </div>
