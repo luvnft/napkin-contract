@@ -32,7 +32,9 @@ export const MainWrapper = ({
       <h3 className="h-16 flex items-start pt-6 px-3 justify-center text-black text-2xl font-semibold text-center">
         {title}
       </h3>
-      <div className="flex-grow min-h-0 p-2 px-5">{isLoading ? <Spinner /> : children}</div>
+      <div className="flex-grow min-h-0 p-2 px-5 flex flex-col gap-7">
+        {isLoading ? <Spinner /> : children}
+      </div>
       {submitButton ? (
         <div className="w-full h-[90px] flex items-center justify-center shrink-0">
           {submitButton}

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { Button, MainWrapper } from '@/shared/components';
+import { Button, MainWrapper, Signees } from '@/shared/components';
 import { useAppDispatch, useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
 import { userSelector } from '@/shared/store/selector/user';
@@ -65,10 +65,11 @@ export const ReadyContract = ({ id }: PropTypes) => {
     <MainWrapper title="Contract" submitButton={submitButton}>
       <div
         style={{ scrollbarWidth: 'none' }}
-        className="resize-none h-full sm:h-[459px] sm:max-h-[459px] w-full p-2 border-0 outline-0 rounded border-none overflow-y-scroll text-black text-2xl"
+        className="resize-none h-full sm:h-64 sm:max-h-64 w-full p-2 border-0 outline-0 rounded border-none overflow-y-scroll text-black text-2xl"
       >
         {isFound ? contractText : <div className="w-full text-center">Contract not found</div>}
       </div>
+      <Signees />
     </MainWrapper>
   );
 };
