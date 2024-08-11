@@ -21,7 +21,7 @@ export const NewContract = () => {
   useEffect(() => {
     dispatch(initializeContract());
     dispatch(initializeAlice());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setContractText(contract.text);

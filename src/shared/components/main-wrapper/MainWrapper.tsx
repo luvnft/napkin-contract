@@ -20,7 +20,7 @@ export const MainWrapper = ({
   useEffect(() => {
     if (isLoadingOriginal !== undefined) return;
     setIsLoading(false);
-  }, []);
+  }, [isLoadingOriginal]);
 
   useEffect(() => {
     if (isLoadingOriginal === undefined) return;

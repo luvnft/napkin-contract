@@ -14,7 +14,7 @@ export const ReviewContract = () => {
 
   useEffect(() => {
     setContractText(contractTextSelector.text);
-  }, []);
+  }, [contractTextSelector.text]);
 
   const submitButton = (
     <Button

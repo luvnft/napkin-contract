@@ -1,5 +1,6 @@
-import { EAS, SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 import { ethers } from 'ethers';
+
+import { EAS, SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 
 const ETHERS_NETWORK = 'https://sepolia.base.org';
 
@@ -38,9 +39,7 @@ export async function createContractAttestation(name: string, contract: string) 
 export async function signContractAttestation(name: string, uidContract: string) {
   const schemaUID = process.env.NEXT_PUBLIC_SIGNATORY_SCHEMA_ID as string;
   const schemaEncoder = new SchemaEncoder('string name');
-  const encodedData = schemaEncoder.encodeData([
-    { name: 'name', value: name, type: 'string' },
-  ]);
+  const encodedData = schemaEncoder.encodeData([{ name: 'name', value: name, type: 'string' }]);
   return await attest(encodedData, schemaUID, uidContract);
 }
 

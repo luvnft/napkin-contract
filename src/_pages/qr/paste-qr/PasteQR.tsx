@@ -14,7 +14,7 @@ export const PasteQR = () => {
 
   useEffect(() => {
     dispatch(initializeBob());
-  }, []);
+  }, [dispatch]);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     setContractLink(e.target.value);

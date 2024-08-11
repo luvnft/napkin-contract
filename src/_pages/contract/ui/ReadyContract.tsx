@@ -36,7 +36,7 @@ export const ReadyContract = ({ id }: PropTypes) => {
     const isSigned = isContractSigned(currentContract, currentUser);
     setIsSigned(isSigned);
     setIsFound(true);
-  }, []);
+  }, [currentContract, currentContract.id, currentUser, id]);
 
   const submitButton = (
     <Button
