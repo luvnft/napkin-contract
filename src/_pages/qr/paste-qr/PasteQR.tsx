@@ -13,6 +13,16 @@ export const PasteQR = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const redirectIfLinkAvailable = async () => {
+      const contractLink = await navigator.clipboard.readText();
+      if (!contractLink?.startsWith('/contract/')) return;
+      router.push(contractLink, { scroll: false });
+    };
+    void redirectIfLinkAvailable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     dispatch(initializeBob());
   }, [dispatch]);
 
