@@ -50,6 +50,7 @@ export const Authentication = () => {
         router.push('/contract/review', { scroll: false });
       }}
       title="Next"
+      disabled={!attestationUid}
     />
   );
 
