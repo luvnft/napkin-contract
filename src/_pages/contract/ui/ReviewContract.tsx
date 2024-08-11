@@ -5,7 +5,6 @@ import { Button, MainWrapper, Signees } from '@/shared/components';
 import { useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
 import { userSelector } from '@/shared/store/selector/user';
-import { toastSuccess } from '@/shared/utils/toast';
 
 import { isContractSigned } from '../utils';
 
@@ -31,7 +30,6 @@ export const ReviewContract = () => {
   const submitButton = (
     <Button
       onClick={() => {
-        toastSuccess('Request signing');
         router.push('/contract/share', { scroll: false });
       }}
       title={isSigned ? 'Next' : 'Sign'}
