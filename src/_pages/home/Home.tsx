@@ -9,6 +9,6 @@ export const Home = () => (
 
     <Button title="Create contract" href="/contract/new" />
     <Button title="Paste code" href="/qr/paste" />
-    <Button title="Scan QR" href="/contract/new" />
+    <Button title="Scan QR" href="/scan-qr" />
   </main>
 );
