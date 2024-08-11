@@ -36,9 +36,9 @@ export const LoginForm = ({ isVisible, setIsVisible }: PropTypes) => {
 
   return (
     <Overlay isVisible={isVisible} onClick={() => setIsVisible(false)}>
-      <div className="h-full w-full flex items-center justify-center">
+      <div className="h-full w-full flex items-center justify-center p-10">
         <form
-          className="flex flex-col w-96 h-96 gap-5 bg-black/60 rounded-2xl p-5"
+          className="flex flex-col w-[300px] h-96 gap-5 bg-black rounded-2xl p-5"
           onClick={(e) => e.stopPropagation()}
         >
           <span className="text-xl text-center p-2">Login</span>
