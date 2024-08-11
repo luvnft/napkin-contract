@@ -12,8 +12,7 @@ export const PasteQR = () => {
   useEffect(() => {
     const redirectIfLinkAvailable = async () => {
       const contractLink = await navigator.clipboard.readText();
-      if (!contractLink?.startsWith('/contract/')) return;
-      router.push(contractLink, { scroll: false });
+      router.push(`/contract/${contractLink}`, { scroll: false });
     };
     void redirectIfLinkAvailable();
     // eslint-disable-next-line react-hooks/exhaustive-deps

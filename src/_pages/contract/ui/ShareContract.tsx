@@ -13,7 +13,7 @@ export const ShareContract = () => {
 
   const handleQRClick = async () => {
     if (window.isSecureContext) {
-      await navigator.clipboard.writeText(`/contract/${currentContract.id}`);
+      await navigator.clipboard.writeText(currentContract.id);
     }
     toastInfo('contract link copied');
   };
