@@ -72,6 +72,7 @@ export const Authentication = () => {
           // }}
           connectButton={{
             label: 'Connect Wallet',
+            // @ts-ignore
             style: btnStyle,
           }}
         />
@@ -80,6 +81,7 @@ export const Authentication = () => {
             transaction={() => prepareCreateAttestation(account.address as Hex, currentContract)}
             onTransactionConfirmed={handleTransaction}
             onError={console.error}
+            // @ts-ignore
             style={btnStyle}
           >
             Create Attestation

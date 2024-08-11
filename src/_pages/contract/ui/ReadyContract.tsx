@@ -1,11 +1,9 @@
 import { Button, MainWrapper, Signees } from '@/shared/components';
 import { useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
-import { userSelector } from '@/shared/store/selector/user';
 import { toastSuccess } from '@/shared/utils/toast';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { isContractSigned } from '../utils';
 
 type PropTypes = {
   id: string | undefined;
@@ -21,21 +19,19 @@ export const ReadyContract = ({ id }: PropTypes) => {
   const [isSigned, setIsSigned] = useState(false);
   const [isFound, setIsFound] = useState(false);
   const currentContract = useAppSelector(contractSelector);
-  const currentUser = useAppSelector(userSelector);
   const router = useRouter();
 
   useEffect(() => {
     //normally here would be code looking up contract from db
-    if (currentContract.id !== id) {
-      setIsFound(false);
-      return;
-    }
-
+    // if (currentContract.id !== id) {
+    //   setIsFound(false);
+    //   return;
+    // }
     setContractText(currentContract.text);
-    const isSigned = isContractSigned(currentContract, currentUser);
+    const isSigned = false; //isContractSigned(currentContract);
     setIsSigned(isSigned);
     setIsFound(true);
-  }, [currentContract, currentContract.id, currentUser, id]);
+  }, [currentContract, /* currentContract.id, currentUser,*/ id]);
 
   const handleClick = () => {
     if (!isFound) {

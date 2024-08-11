@@ -1,20 +1,17 @@
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 import { Button, MainWrapper } from '@/shared/components';
-import { useAppSelector } from '@/shared/store/hook';
-import { contractSelector } from '@/shared/store/selector/contract';
 import { toastInfo, toastSuccess } from '@/shared/utils/toast';
 import qrCode from '@public/qrcode.png';
 
 export const ShareContract = () => {
-  const router = useRouter();
-  const currentContract = useAppSelector(contractSelector);
+  // const router = useRouter();
+  // const currentContract = useAppSelector(contractSelector);
 
-  const handleQRClick = async () => {
-    if (window.isSecureContext) {
-      await navigator.clipboard.writeText(currentContract.id);
-    }
+  const handleQRClick = /* async */ () => {
+    // if (window.isSecureContext) {
+    //   await navigator.clipboard.writeText(currentContract.id);
+    // }
     toastInfo('contract link copied');
   };
 
@@ -22,7 +19,7 @@ export const ShareContract = () => {
     <Button
       onClick={() => {
         toastSuccess('Shared');
-        router.push(`/contract/${currentContract.id}`, { scroll: false });
+        // router.push(`/contract/${currentContract.id}`, { scroll: false });
       }}
       title="Done"
     />

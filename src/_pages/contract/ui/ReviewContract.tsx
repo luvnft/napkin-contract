@@ -1,31 +1,26 @@
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-
 import { Button, MainWrapper, Signees } from '@/shared/components';
 import { useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
-import { userSelector } from '@/shared/store/selector/user';
-
-import { isContractSigned } from '../utils';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export const ReviewContract = () => {
   const [contractText, setContractText] = useState('');
 
   const router = useRouter();
   const currentContract = useAppSelector(contractSelector);
-  const currentUser = useAppSelector(userSelector);
+  // const currentUser = useAppSelector(userSelector);
 
   const [isSigned, setIsSigned] = useState(false);
 
   useEffect(() => {
-    if (!currentContract.id) {
-      return;
-    }
-
+    // if (!currentContract.id) {
+    //   return;
+    // }
     setContractText(currentContract.text);
-    const isSigned = isContractSigned(currentContract, currentUser);
+    const isSigned = false; //isContractSigned(currentContract, currentUser);
     setIsSigned(isSigned);
-  }, [currentContract, currentContract.id, currentUser]);
+  }, [currentContract /* currentContract.id, currentUser*/]);
 
   const submitButton = (
     <Button
