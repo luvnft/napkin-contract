@@ -1,10 +1,10 @@
-// @ts-nocheck
-import { fetchAttestation } from '@/api/eas-thirdweb';
+// @ts-nocheck_
+import { fetchAttestation, fetchSignatureAttestations } from '@/api/eas-thirdweb';
 import { Button, MainWrapper, Signees, Spinner } from '@/shared/components';
 import { useAppDispatch, useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
 import { updateContract } from '@/shared/store/slice/contract';
-import { toastError } from '@/shared/utils/toast';
+import { toastError, toastInfo } from '@/shared/utils/toast';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useActiveAccount } from 'thirdweb/react';
@@ -29,7 +29,7 @@ export const ReadyContract = ({ id }: PropTypes) => {
   const contract = useAppSelector(contractSelector);
 
   useEffect(() => {
-    fetchAttestation(id).then((contract) => {
+    fetchAttestation(id).then(async (contract) => {
       dispatch(
         updateContract({
           data: {
@@ -39,13 +39,14 @@ export const ReadyContract = ({ id }: PropTypes) => {
           },
         }),
       );
-      setSignees([
-        {
-          id: contract.recipient,
-          fullname: contract.name,
-          dateSigned: contract.createdAt,
-        },
-      ]);
+      const signees = await fetchSignatureAttestations(id);
+      setSignees(
+        [contract, ...signees].map(({ uid, name, createdAt }) => ({
+          id: uid,
+          fullname: name,
+          dateSigned: createdAt,
+        })),
+      );
       setIsLoading(false);
       setIsFound(true);
     }, console.error);

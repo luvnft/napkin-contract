@@ -2,6 +2,7 @@ import { client } from '@/shared/const';
 import { Contract } from '@/shared/types';
 import { EAS__factory } from '@ethereum-attestation-service/eas-contracts';
 import { SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
+import axios from 'axios';
 import { Hex, getContract, prepareContractCall, readContract } from 'thirdweb';
 import { baseSepolia } from 'thirdweb/chains';
 import { TransactionReceipt } from 'viem';
@@ -72,12 +73,62 @@ export async function fetchAttestation(uid: Hex) {
     method: 'getAttestation',
     params: [uid],
   });
-  const fields = createSchemaEncoder
+  return createSchemaEncoder
     .decodeData(data)
-    .reduce((memo, { name, value }) => ({ ...memo, [name]: value.value }), {});
-  return {
-    ...fields,
-    recipient,
-    createdAt: new Date(Number(time)),
+    .reduce((memo, { name, value }) => ({ ...memo, [name]: value.value }), {
+      uid,
+      recipient,
+      createdAt: new Date(Number(time)),
+    });
+}
+
+export async function fetchSignatureAttestations(uid: Hex) {
+  const url = 'https://base-sepolia.easscan.org/graphql';
+  const schemaId = process.env.NEXT_PUBLIC_SIGNATORY_SCHEMA_ID as Hex;
+  const data = {
+    query: `query Query {
+    attestations(
+      where: {
+        AND: [
+          {
+            refUID: {
+              equals: "${uid}"
+            }
+            schemaId: {
+              equals: "${schemaId}"
+            }
+          }
+        ]
+      }
+    ) {
+      id
+      data
+      recipient
+      time
+    }
+  }
+`,
+    variables: {},
   };
+
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  // try {
+  const response = await axios.post(url, data, { headers });
+  // @ts-ignore
+  return response.data.data.attestations.map(({ id, data, recipient, time }) =>
+    signSchemaEncoder
+      .decodeData(data)
+      .reduce((memo, { name, value }) => ({ ...memo, [name]: value.value }), {
+        uid: id,
+        recipient,
+        createdAt: new Date(time * 1000),
+      }),
+  );
+  // } catch (error) {
+  //   console.error('Error fetching attestations:', error);
+  //   return null;
+  // }
 }
