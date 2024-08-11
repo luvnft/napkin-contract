@@ -4,17 +4,29 @@ import { useEffect, useState } from 'react';
 import { Button, MainWrapper, Signees } from '@/shared/components';
 import { useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
+import { userSelector } from '@/shared/store/selector/user';
 import { toastSuccess } from '@/shared/utils/toast';
+
+import { isContractSigned } from '../utils';
 
 export const ReviewContract = () => {
   const [contractText, setContractText] = useState('');
 
   const router = useRouter();
-  const contractTextSelector = useAppSelector(contractSelector);
+  const currentContract = useAppSelector(contractSelector);
+  const currentUser = useAppSelector(userSelector);
+
+  const [isSigned, setIsSigned] = useState(false);
 
   useEffect(() => {
-    setContractText(contractTextSelector.text);
-  }, [contractTextSelector.text]);
+    if (!currentContract.id) {
+      return;
+    }
+
+    setContractText(currentContract.text);
+    const isSigned = isContractSigned(currentContract, currentUser);
+    setIsSigned(isSigned);
+  }, [currentContract, currentContract.id, currentUser]);
 
   const submitButton = (
     <Button
@@ -22,7 +34,7 @@ export const ReviewContract = () => {
         toastSuccess('Request signing');
         router.push('/contract/share', { scroll: false });
       }}
-      title="Sign"
+      title={isSigned ? 'Next' : 'Sign'}
     />
   );
 
