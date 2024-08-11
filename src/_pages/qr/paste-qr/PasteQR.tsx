@@ -3,14 +3,11 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import { Button, MainWrapper } from '@/shared/components';
-import { useAppDispatch } from '@/shared/store/hook';
-import { initializeBob } from '@/shared/store/slice/user';
 import { toastSuccess } from '@/shared/utils/toast';
 
 export const PasteQR = () => {
   const [contractLink, setContractLink] = useState('');
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const redirectIfLinkAvailable = async () => {
@@ -21,10 +18,6 @@ export const PasteQR = () => {
     void redirectIfLinkAvailable();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    dispatch(initializeBob());
-  }, [dispatch]);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     setContractLink(e.target.value);
