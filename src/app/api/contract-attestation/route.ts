@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { createContractAttestation } from '@/api/eas';
 
+/** @deprecated */
 export async function POST(request: Request) {
   try {
     const { /* address, */ contract } = await request.json();
