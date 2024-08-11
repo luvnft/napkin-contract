@@ -1,16 +1,11 @@
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-
 import { Button, MainWrapper, Signees } from '@/shared/components';
-import { useAppDispatch, useAppSelector } from '@/shared/store/hook';
+import { useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
 import { userSelector } from '@/shared/store/selector/user';
-import { updateContract } from '@/shared/store/slice/contract';
-import { Contract, Signee } from '@/shared/types';
 import { toastSuccess } from '@/shared/utils/toast';
-
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { isContractSigned } from '../utils';
-import { SignForm } from './LoginUser';
 
 type PropTypes = {
   id: string | undefined;
@@ -25,9 +20,6 @@ export const ReadyContract = ({ id }: PropTypes) => {
   const [contractText, setContractText] = useState('');
   const [isSigned, setIsSigned] = useState(false);
   const [isFound, setIsFound] = useState(false);
-  const [isLoginShown, setIsLoginShown] = useState(false);
-
-  const dispatch = useAppDispatch();
   const currentContract = useAppSelector(contractSelector);
   const currentUser = useAppSelector(userSelector);
   const router = useRouter();
@@ -45,41 +37,19 @@ export const ReadyContract = ({ id }: PropTypes) => {
     setIsFound(true);
   }, [currentContract, currentContract.id, currentUser, id]);
 
-  const handleSignContract = () => {
-    if (!currentUser.id) {
-      setIsLoginShown(true);
-      return;
-    }
-
-    const newSignee: Signee = {
-      ...currentUser,
-      dateSigned: new Date().toISOString(),
-    };
-    const payload: { data: Contract } = {
-      data: { ...currentContract, signees: [...currentContract.signees, newSignee] },
-    };
-    dispatch(updateContract(payload));
-    setIsSigned(true);
-  };
-
   const handleClick = () => {
     if (!isFound) {
       router.push('/qr/paste', { scroll: false });
       return;
     }
-    if (!isSigned) {
-      handleSignContract();
-    } else {
-      router.push('/contract/share', { scroll: false });
-    }
-
+    router.push('/contract/share', { scroll: false });
     toastSuccess(isSigned ? 'Shared' : 'Signed');
   };
 
   const submitButton = <Button onClick={handleClick} title={getTitle(isFound, isSigned)} />;
 
   return (
-    <MainWrapper title={currentContract?.title || 'Contract'} submitButton={submitButton}>
+    <MainWrapper title="Contract" submitButton={submitButton}>
       <div
         style={{ scrollbarWidth: 'none' }}
         className="resize-none h-full sm:h-64 sm:max-h-64 w-full p-2 border-0 outline-0 rounded border-none overflow-y-scroll text-black text-2xl"
@@ -87,7 +57,6 @@ export const ReadyContract = ({ id }: PropTypes) => {
         {isFound ? contractText : <div className="w-full text-center">Contract not found</div>}
       </div>
       <Signees />
-      <SignForm isVisible={isLoginShown} setIsVisible={setIsLoginShown} />
     </MainWrapper>
   );
 };

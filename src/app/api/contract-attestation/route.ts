@@ -4,11 +4,9 @@ import { createContractAttestation } from '@/api/eas';
 
 export async function POST(request: Request) {
   try {
-    const { accountAddress, contractLabel } = await request.json();
-
-    const attestationUID = await createContractAttestation(accountAddress, contractLabel);
-
-    return NextResponse.json(JSON.stringify(attestationUID));
+    const { /* address, */ contract } = await request.json();
+    const uid = await createContractAttestation(contract.name, contract.text);
+    return NextResponse.json(JSON.stringify(uid));
   } catch (e) {
     console.error(`Creation of contract attestation failed: ${e}`);
     return new Response(null, {

@@ -27,15 +27,12 @@ export const Authentication = () => {
 
   useEffect(() => {
     if (!initialized.current && process.env.NODE_ENV === 'development') return;
-
     if (!account?.address) {
       setIsLoading(false);
       return;
     }
-
     setIsLoading(true);
-
-    postContractAttestation(account.address, currentContract.title)
+    postContractAttestation(account.address, currentContract)
       .then((uid) => {
         setAttestationUid(uid);
         toastSuccess('new contract attestation created');
@@ -45,12 +42,12 @@ export const Authentication = () => {
         toastError('new contract attestation failed');
       })
       .finally(() => setIsLoading(false));
-  }, [account?.address, currentContract.title]);
+  }, [account?.address, currentContract]);
 
   const submitButton = (
     <Button
       onClick={() => {
-        router.push('/contract/review', { scroll: false });
+        router.push(`/contract/${attestationUid}`, { scroll: false });
       }}
       title="Next"
       disabled={!attestationUid}
@@ -96,7 +93,9 @@ export const Authentication = () => {
             Contract has been recorded{' '}
             <a
               href={`https://base-sepolia.easscan.org/attestation/view/${attestationUid}`}
+              target="_blank"
               className="text-indigo-300 hover:text-indigo-500 underline"
+              rel="noreferrer"
             >
               on-chain
             </a>
