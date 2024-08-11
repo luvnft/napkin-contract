@@ -29,7 +29,7 @@ export const ShareContract = () => {
   );
 
   return (
-    <MainWrapper title="Share the QR to request signing" submitButton={submitButton}>
+    <MainWrapper title="Invite signees" submitButton={submitButton}>
       <div className="h-full sm:h-[459px] sm:max-h-[459px] w-full p-2 rounded text-black text-2xl flex flex-col items-center justify-center gap-3">
         <Image
           src={qrCode}
@@ -37,7 +37,7 @@ export const ShareContract = () => {
           className="size-[150px] md:size-[150px]"
           onClick={handleQRClick}
         />
-        <span className="text-center text-gray-500">Tap QR code to copy contract link</span>
+        <span className="text-center text-gray-500">Click QR to copy</span>
       </div>
     </MainWrapper>
   );
