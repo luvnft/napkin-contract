@@ -22,6 +22,7 @@ export const ReadyContract = ({ id }: PropTypes) => {
   const [signees, setSignees] = useState([]);
   const [isFound, setIsFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSigned, setIsSigned] = useState(false);
   const account = useActiveAccount();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -50,6 +51,11 @@ export const ReadyContract = ({ id }: PropTypes) => {
     }, console.error);
   }, [id, dispatch]);
 
+  useEffect(() => {
+    const signed = signees.some(({ id }) => account?.address === id);
+    setIsSigned(signed);
+  }, [signees, account]);
+
   const handleClick = async () => {
     // Redirect to home page
     if (!isFound) {
@@ -71,9 +77,7 @@ export const ReadyContract = ({ id }: PropTypes) => {
     }
   };
 
-  const submitButton = (
-    <Button onClick={handleClick} title={getTitle(isFound, signees.length > 1)} />
-  );
+  const submitButton = <Button onClick={handleClick} title={getTitle(isFound, isSigned)} />;
 
   return (
     <MainWrapper title="Contract" submitButton={submitButton}>
