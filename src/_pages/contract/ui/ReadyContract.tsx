@@ -1,9 +1,8 @@
 import { Button, MainWrapper, Signees } from '@/shared/components';
-import { useAppSelector } from '@/shared/store/hook';
-import { contractSelector } from '@/shared/store/selector/contract';
 import { toastSuccess } from '@/shared/utils/toast';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { fetchAttestation } from '@/api/eas-thirdweb';
 
 type PropTypes = {
   id: string | undefined;
@@ -18,20 +17,19 @@ export const ReadyContract = ({ id }: PropTypes) => {
   const [contractText, setContractText] = useState('');
   const [isSigned, setIsSigned] = useState(false);
   const [isFound, setIsFound] = useState(false);
-  const currentContract = useAppSelector(contractSelector);
   const router = useRouter();
-
+  
   useEffect(() => {
-    //normally here would be code looking up contract from db
-    // if (currentContract.id !== id) {
-    //   setIsFound(false);
-    //   return;
-    // }
-    setContractText(currentContract.text);
-    const isSigned = false; //isContractSigned(currentContract);
-    setIsSigned(isSigned);
-    setIsFound(true);
-  }, [currentContract, /* currentContract.id, currentUser,*/ id]);
+    (async () => {
+        // @ts-ignore
+      const currentContract = await fetchAttestation(id);
+        // @ts-ignore
+      setContractText(currentContract.contract);
+      const isSigned = false; 
+      setIsSigned(isSigned);
+      setIsFound(true);
+    })()
+  }, []);
 
   const handleClick = () => {
     if (!isFound) {
