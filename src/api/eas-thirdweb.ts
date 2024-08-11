@@ -1,4 +1,5 @@
 import { client } from '@/shared/const';
+import { Contract } from '@/shared/types';
 import { EAS__factory } from '@ethereum-attestation-service/eas-contracts';
 import { SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 import { Hex, getContract, prepareContractCall, readContract } from 'thirdweb';
@@ -13,10 +14,10 @@ const contract = getContract({
   abi: EAS__factory.abi,
 });
 
-export function createAttestation(recipient: Hex) {
+export function prepareCreateAttestation(recipient: Hex, content: Contract) {
   const data = schemaEncoder.encodeData([
-    { name: 'name', value: 'Test User', type: 'string' },
-    { name: 'contract', value: 'My agreeement', type: 'string' },
+    { name: 'name', value: content.name, type: 'string' },
+    { name: 'contract', value: content.text, type: 'string' },
   ]) as Hex;
   return prepareContractCall({
     contract,

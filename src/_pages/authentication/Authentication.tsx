@@ -1,21 +1,36 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
-import { ConnectButton, useActiveAccount } from 'thirdweb/react';
-
-import { postContractAttestation } from '@/api';
-import { Button, Spinner } from '@/shared/components';
+import { extractAttesttionUid, prepareCreateAttestation } from '@/api/eas-thirdweb';
+import { Button } from '@/shared/components';
 import { MainWrapper } from '@/shared/components/main-wrapper/MainWrapper';
-import { appName, appUrl, client } from '@/shared/const';
+import { client } from '@/shared/const';
 import { useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
-import { toastError, toastSuccess } from '@/shared/utils/toast';
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import { Hex } from 'thirdweb';
+import { baseSepolia } from 'thirdweb/chains';
+import { ConnectButton, TransactionButton, useActiveAccount } from 'thirdweb/react';
+import { TransactionReceipt } from 'viem';
+
+const btnStyle = {
+  backgroundColor: '#DC0203',
+  color: 'white',
+  fontSize: '1.25rem',
+  fontWeight: '500',
+  width: '14rem',
+  height: '3rem',
+  borderRadius: '0.75rem',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+};
 
 export const Authentication = () => {
   const router = useRouter();
   const account = useActiveAccount();
   const initialized = useRef(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [attestationUid, setAttestationUid] = useState('');
   const currentContract = useAppSelector(contractSelector);
 
@@ -25,24 +40,10 @@ export const Authentication = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (!initialized.current && process.env.NODE_ENV === 'development') return;
-    if (!account?.address) {
-      setIsLoading(false);
-      return;
-    }
-    setIsLoading(true);
-    postContractAttestation(account.address, currentContract)
-      .then((uid) => {
-        setAttestationUid(uid);
-        toastSuccess('new contract attestation created');
-      })
-      .catch((e) => {
-        console.error(`Creation of contract attestation failed: ${e}`);
-        toastError('new contract attestation failed');
-      })
-      .finally(() => setIsLoading(false));
-  }, [account?.address, currentContract]);
+  function handleTransaction(receipt: TransactionReceipt) {
+    const uid = extractAttesttionUid(receipt);
+    setAttestationUid(uid);
+  }
 
   const submitButton = (
     <Button
@@ -59,36 +60,32 @@ export const Authentication = () => {
       <div className="flex flex-col items-center justify-start p-10 gap-7">
         <ConnectButton
           client={client}
-          theme={'dark'}
-          appMetadata={{
-            name: appName,
-            url: appUrl,
+          chains={[baseSepolia]}
+          accountAbstraction={{
+            chain: baseSepolia,
+            sponsorGas: true,
           }}
+          theme="light"
+          // appMetadata={{
+          //   name: appName,
+          //   url: appUrl,
+          // }}
           connectButton={{
             label: 'Connect Wallet',
-            style: {
-              backgroundColor: '#DC0203',
-              color: 'white',
-              fontSize: '1.25rem',
-              fontWeight: '500',
-              width: '14rem',
-              height: '3rem',
-              borderRadius: '0.75rem',
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            },
+            style: btnStyle,
           }}
         />
-        {isLoading && (
-          <div className="flex flex-col gap-3 text-black">
-            <span>Creating attestation...</span>
-            <Spinner />
-          </div>
+        {account && !attestationUid && (
+          <TransactionButton
+            transaction={() => prepareCreateAttestation(account.address as Hex, currentContract)}
+            onTransactionConfirmed={handleTransaction}
+            onError={console.error}
+            style={btnStyle}
+          >
+            Create Attestation
+          </TransactionButton>
         )}
-        {!isLoading && attestationUid ? (
+        {attestationUid ? (
           <span className="text-black">
             Contract has been recorded{' '}
             <a
