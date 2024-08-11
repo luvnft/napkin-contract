@@ -1,4 +1,4 @@
-import { Button, MainWrapper, Signees } from '@/shared/components';
+import { Button, MainWrapper } from '@/shared/components';
 import { useAppSelector } from '@/shared/store/hook';
 import { contractSelector } from '@/shared/store/selector/contract';
 import { useRouter } from 'next/navigation';
@@ -39,7 +39,7 @@ export const ReviewContract = () => {
       >
         {contractText}
       </div>
-      <Signees />
+      {/* <Signees /> */}
     </MainWrapper>
   );
 };
