@@ -62,6 +62,23 @@ export const Authentication = () => {
             name: appName,
             url: appUrl,
           }}
+          connectButton={{
+            label: 'Connect Wallet',
+            style: {
+              backgroundColor: '#DC0203',
+              color: 'white',
+              fontSize: '1.25rem',
+              fontWeight: '500',
+              width: '14rem',
+              height: '3rem',
+              borderRadius: '0.75rem',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            },
+          }}
         />
         {isLoading && (
           <div className="flex flex-col gap-3 text-black">
