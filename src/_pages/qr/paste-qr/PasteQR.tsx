@@ -32,14 +32,20 @@ export const PasteQR = () => {
 
   return (
     <MainWrapper title="Open contract link" submitButton={submitButton}>
-      <div className="h-full sm:h-[459px] sm:max-h-[459px] w-full p-2 rounded text-black text-2xl flex items-center justify-center">
-        <input
-          id="pasteLink"
-          type="text"
-          className="resize-none w-full p-2 border-0 outline-0 rounded border-none overflow-hidden text-black text-2xl"
-          placeholder="paste your link here"
-          onChange={handleOnChange}
-        />
+      <div className="h-full sm:h-[459px] sm:max-h-[459px] w-full p-2 rounded text-black text-2xl flex items-start justify-center">
+        <div className="flex flex-col">
+          <label htmlFor="pasteLink" className="text-black text-base px-2">
+            Link:
+          </label>
+
+          <input
+            id="pasteLink"
+            type="text"
+            className="resize-none w-full p-2 border-0 outline-0 rounded border-none overflow-hidden text-black text-2xl"
+            placeholder=""
+            onChange={handleOnChange}
+          />
+        </div>
       </div>
     </MainWrapper>
   );

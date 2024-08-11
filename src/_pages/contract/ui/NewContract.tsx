@@ -49,16 +49,21 @@ export const NewContract = () => {
 
   return (
     <MainWrapper title="Fill Contract" submitButton={submitButton}>
-      <textarea
-        id="createPostTextarea"
-        placeholder={'What do you want agree upon?'}
-        onChange={(e) => {
-          setContractText(e.target.value);
-        }}
-        value={contractText}
-        maxLength={5000}
-        className="resize-none h-full sm:h-[459px] sm:max-h-[459px] w-full p-2 border-0 outline-0 rounded border-none overflow-hidden text-black text-2xl"
-      />
+      <div className="flex flex-col items-start justify-center">
+        <label htmlFor="contractText" className="text-black text-base px-2">
+          Contract text:
+        </label>
+        <textarea
+          id="contractText"
+          placeholder={''}
+          onChange={(e) => {
+            setContractText(e.target.value);
+          }}
+          value={contractText}
+          maxLength={5000}
+          className="resize-none h-full sm:h-[435px] sm:max-h-[435px] w-full p-2 border-0 outline-0 rounded border-none overflow-hidden text-black text-2xl"
+        />
+      </div>
     </MainWrapper>
   );
 };

@@ -2,11 +2,7 @@ import { Contract } from '@/shared/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: Contract = {
-  text: `Hey Bob,
-
-I, Alice, promise to bring you two bottles of Budweiser every day for 20 days, starting from 20th August 2024. I’ll drop them off at your place each day.
-
-– Alice`,
+  text: '',
   dateCreated: '',
   id: '',
   signees: [],
