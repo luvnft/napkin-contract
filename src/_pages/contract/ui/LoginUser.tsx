@@ -13,7 +13,7 @@ type PropTypes = {
   setIsVisible: Dispatch<SetStateAction<boolean>>;
 };
 
-export const LoginForm = ({ isVisible, setIsVisible }: PropTypes) => {
+export const SignForm = ({ isVisible, setIsVisible }: PropTypes) => {
   const [fullname, setFullname] = useState('');
   const dispatch = useAppDispatch();
 

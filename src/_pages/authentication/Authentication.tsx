@@ -7,6 +7,8 @@ import { postContractAttestation } from '@/api';
 import { Button, Spinner } from '@/shared/components';
 import { MainWrapper } from '@/shared/components/main-wrapper/MainWrapper';
 import { appName, appUrl, client } from '@/shared/const';
+import { useAppSelector } from '@/shared/store/hook';
+import { contractSelector } from '@/shared/store/selector/contract';
 import { toastError, toastSuccess } from '@/shared/utils/toast';
 
 export const Authentication = () => {
@@ -15,6 +17,7 @@ export const Authentication = () => {
   const initialized = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
   const [attestationUid, setAttestationUid] = useState('');
+  const currentContract = useAppSelector(contractSelector);
 
   useEffect(() => {
     if (process.env.NODE_ENV == 'development' && !initialized.current) {
@@ -32,7 +35,7 @@ export const Authentication = () => {
 
     setIsLoading(true);
 
-    postContractAttestation(account.address, 'Our agreeement terms')
+    postContractAttestation(account.address, currentContract.title)
       .then((uid) => {
         setAttestationUid(uid);
         toastSuccess('new contract attestation created');
@@ -42,7 +45,7 @@ export const Authentication = () => {
         toastError('new contract attestation failed');
       })
       .finally(() => setIsLoading(false));
-  }, [account?.address]);
+  }, [account?.address, currentContract.title]);
 
   const submitButton = (
     <Button

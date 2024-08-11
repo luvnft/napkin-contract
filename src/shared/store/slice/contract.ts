@@ -2,6 +2,7 @@ import { Contract } from '@/shared/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: Contract = {
+  title: '',
   text: '',
   dateCreated: '',
   id: '',
@@ -17,6 +18,7 @@ const slice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
+      state.title = initialState.title;
       state.text = initialState.text;
       state.dateCreated = new Date().toISOString();
       state.id = initialState.id;
@@ -25,6 +27,7 @@ const slice = createSlice({
     updateContract: (state: Contract, action: PayloadAction<{ data: Contract }>) => {
       const payload = action.payload.data;
 
+      state.title = payload.title;
       state.text = payload.text;
       state.dateCreated = payload.dateCreated;
       state.id = payload.id;

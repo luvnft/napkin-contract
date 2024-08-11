@@ -10,6 +10,7 @@ export type Signee = User & {
 export type Contract = {
   id: string;
   signees: Signee[];
+  title: string;
   text: string;
   dateCreated: string;
 };

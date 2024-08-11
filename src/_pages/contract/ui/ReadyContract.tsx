@@ -8,9 +8,9 @@ import { userSelector } from '@/shared/store/selector/user';
 import { updateContract } from '@/shared/store/slice/contract';
 import { Contract, Signee } from '@/shared/types';
 import { toastSuccess } from '@/shared/utils/toast';
-import { LoginForm } from '@/widgets';
 
 import { isContractSigned } from '../utils';
+import { SignForm } from './LoginUser';
 
 type PropTypes = {
   id: string | undefined;
@@ -79,7 +79,7 @@ export const ReadyContract = ({ id }: PropTypes) => {
   const submitButton = <Button onClick={handleClick} title={getTitle(isFound, isSigned)} />;
 
   return (
-    <MainWrapper title="Contract" submitButton={submitButton}>
+    <MainWrapper title={currentContract?.title || 'Contract'} submitButton={submitButton}>
       <div
         style={{ scrollbarWidth: 'none' }}
         className="resize-none h-full sm:h-64 sm:max-h-64 w-full p-2 border-0 outline-0 rounded border-none overflow-y-scroll text-black text-2xl"
@@ -87,7 +87,7 @@ export const ReadyContract = ({ id }: PropTypes) => {
         {isFound ? contractText : <div className="w-full text-center">Contract not found</div>}
       </div>
       <Signees />
-      <LoginForm isVisible={isLoginShown} setIsVisible={setIsLoginShown} />
+      <SignForm isVisible={isLoginShown} setIsVisible={setIsLoginShown} />
     </MainWrapper>
   );
 };
