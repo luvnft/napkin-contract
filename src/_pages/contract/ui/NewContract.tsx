@@ -7,8 +7,6 @@ import { useEffect, useState } from 'react';
 
 export const NewContract = () => {
   const [contractText, setContractText] = useState('');
-  const [fullName, setFullName] = useState('');
-
   const router = useRouter();
   const dispatch = useAppDispatch();
   const contract = useAppSelector(contractSelector);
@@ -18,7 +16,6 @@ export const NewContract = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setFullName(contract.name);
     setContractText(contract.text);
   }, [contract]);
 
@@ -26,7 +23,7 @@ export const NewContract = () => {
     dispatch(
       updateContract({
         data: {
-          name: fullName,
+          name: contract.name,
           text: contractText,
         },
       }),
@@ -40,7 +37,7 @@ export const NewContract = () => {
   return (
     <MainWrapper title="Create Contract" submitButton={submitButton}>
       <div className="flex flex-col items-start justify-center">
-        <textarea
+        {/* <textarea
           id="fullName"
           placeholder={'Your name'}
           onChange={(e) => {
@@ -49,7 +46,7 @@ export const NewContract = () => {
           value={fullName}
           maxLength={5000}
           className="resize-none h-10 w-full p-2 pb-5 border-0 outline-0 rounded border-none overflow-hidden text-black text-2xl"
-        />
+        /> */}
         <textarea
           id="contractText"
           placeholder={'Contract terms'}

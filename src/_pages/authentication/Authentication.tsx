@@ -1,5 +1,9 @@
 'use client';
-import { extractAttesttionUid, prepareCreateAttestation } from '@/api/eas-thirdweb';
+import {
+  extractAttesttionUid,
+  prepareCreateAttestation,
+  prepareSignAttestation,
+} from '@/api/eas-thirdweb';
 import { Button } from '@/shared/components';
 import { MainWrapper } from '@/shared/components/main-wrapper/MainWrapper';
 import { client } from '@/shared/const';
@@ -31,8 +35,9 @@ export const Authentication = () => {
   const router = useRouter();
   const account = useActiveAccount();
   const initialized = useRef(false);
+  const [fullName, setFullName] = useState('');
   const [attestationUid, setAttestationUid] = useState('');
-  const currentContract = useAppSelector(contractSelector);
+  const contract = useAppSelector(contractSelector);
 
   useEffect(() => {
     if (process.env.NODE_ENV == 'development' && !initialized.current) {
@@ -40,9 +45,22 @@ export const Authentication = () => {
     }
   }, []);
 
+  function prepareTransaction() {
+    const recipient = account?.address as Hex;
+    if (contract.uid) {
+      return prepareSignAttestation(recipient, contract.uid as Hex, fullName);
+    } else {
+      return prepareCreateAttestation(recipient, { ...contract, name: fullName });
+    }
+  }
+
   function handleTransaction(receipt: TransactionReceipt) {
-    const uid = extractAttesttionUid(receipt);
-    setAttestationUid(uid);
+    if (contract.uid) {
+      setAttestationUid(contract.uid);
+    } else {
+      const uid = extractAttesttionUid(receipt);
+      setAttestationUid(uid);
+    }
   }
 
   const submitButton = (
@@ -77,15 +95,27 @@ export const Authentication = () => {
           }}
         />
         {account && !attestationUid && (
-          <TransactionButton
-            transaction={() => prepareCreateAttestation(account.address as Hex, currentContract)}
-            onTransactionConfirmed={handleTransaction}
-            onError={console.error}
-            // @ts-ignore
-            style={btnStyle}
-          >
-            Create Attestation
-          </TransactionButton>
+          <>
+            <input
+              type="text"
+              placeholder={'Your name'}
+              onChange={(e) => {
+                setFullName(e.target.value);
+              }}
+              value={fullName}
+              maxLength={100}
+              className="h-10 w-full p-2 pb-5 border-0 outline-0 rounded border-none overflow-hidden text-black text-2xl"
+            />
+            <TransactionButton
+              transaction={prepareTransaction}
+              onTransactionConfirmed={handleTransaction}
+              onError={console.error}
+              // @ts-ignore
+              style={btnStyle}
+            >
+              Create Attestation
+            </TransactionButton>
+          </>
         )}
         {attestationUid ? (
           <span className="text-black">

@@ -2,9 +2,7 @@
 'use client';
 import moment from 'moment';
 
-export const Signees = () => {
-  // const currentContract = useAppSelector(contractSelector);
-  const signees = []; //TODO: Fetch from blockchain
+export const Signees = ({ signees }) => {
   return (
     <div className="w-full h-44 flex flex-col gap-3 text-black">
       {signees.map((s) => {

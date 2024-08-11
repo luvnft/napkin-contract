@@ -1,25 +1,29 @@
-import Image from 'next/image';
-
 import { Button, MainWrapper } from '@/shared/components';
-import { toastInfo, toastSuccess } from '@/shared/utils/toast';
+import { useAppSelector } from '@/shared/store/hook';
+import { contractSelector } from '@/shared/store/selector/contract';
+import { toastError, toastInfo, toastSuccess } from '@/shared/utils/toast';
 import qrCode from '@public/qrcode.png';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export const ShareContract = () => {
-  // const router = useRouter();
-  // const currentContract = useAppSelector(contractSelector);
+  const router = useRouter();
+  const currentContract = useAppSelector(contractSelector);
 
-  const handleQRClick = /* async */ () => {
-    // if (window.isSecureContext) {
-    //   await navigator.clipboard.writeText(currentContract.id);
-    // }
-    toastInfo('contract link copied');
+  const handleQRClick = async () => {
+    if (window.isSecureContext) {
+      await navigator.clipboard.writeText(currentContract.uid as string);
+      toastInfo('Contract code has been copied');
+    } else {
+      toastError('Can not access clipboard');
+    }
   };
 
   const submitButton = (
     <Button
       onClick={() => {
         toastSuccess('Shared');
-        // router.push(`/contract/${currentContract.id}`, { scroll: false });
+        router.push(`/contract/${currentContract.uid}`, { scroll: false });
       }}
       title="Done"
     />

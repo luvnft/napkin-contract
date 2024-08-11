@@ -6,7 +6,8 @@ import { Hex, getContract, prepareContractCall, readContract } from 'thirdweb';
 import { baseSepolia } from 'thirdweb/chains';
 import { TransactionReceipt } from 'viem';
 
-const schemaEncoder = new SchemaEncoder('string name, string contract');
+const createSchemaEncoder = new SchemaEncoder('string name, string contract');
+const signSchemaEncoder = new SchemaEncoder('string name');
 const contract = getContract({
   client,
   chain: baseSepolia,
@@ -15,7 +16,7 @@ const contract = getContract({
 });
 
 export function prepareCreateAttestation(recipient: Hex, content: Contract) {
-  const data = schemaEncoder.encodeData([
+  const data = createSchemaEncoder.encodeData([
     { name: 'name', value: content.name, type: 'string' },
     { name: 'contract', value: content.text, type: 'string' },
   ]) as Hex;
@@ -38,6 +39,27 @@ export function prepareCreateAttestation(recipient: Hex, content: Contract) {
   });
 }
 
+export function prepareSignAttestation(recipient: Hex, refUID: Hex, name: string) {
+  const data = signSchemaEncoder.encodeData([{ name: 'name', value: name, type: 'string' }]) as Hex;
+  return prepareContractCall({
+    contract,
+    method: 'attest',
+    params: [
+      {
+        schema: process.env.NEXT_PUBLIC_SIGNATORY_SCHEMA_ID as Hex,
+        data: {
+          recipient,
+          expirationTime: 0n,
+          revocable: false,
+          refUID,
+          data,
+          value: 0n,
+        },
+      },
+    ],
+  });
+}
+
 export function extractAttesttionUid(receipt: TransactionReceipt) {
   const address = process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS as Hex;
   const targetLog = receipt.logs.find((log) => log.address.toLowerCase() === address.toLowerCase());
@@ -50,7 +72,7 @@ export async function fetchAttestation(uid: Hex) {
     method: 'getAttestation',
     params: [uid],
   });
-  const fields = schemaEncoder
+  const fields = createSchemaEncoder
     .decodeData(data)
     .reduce((memo, { name, value }) => ({ ...memo, [name]: value.value }), {});
   return {

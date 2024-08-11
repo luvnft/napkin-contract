@@ -1,8 +1,13 @@
-import { Button, MainWrapper, Signees } from '@/shared/components';
-import { toastSuccess } from '@/shared/utils/toast';
+// @ts-nocheck
+import { fetchAttestation } from '@/api/eas-thirdweb';
+import { Button, MainWrapper, Signees, Spinner } from '@/shared/components';
+import { useAppDispatch, useAppSelector } from '@/shared/store/hook';
+import { contractSelector } from '@/shared/store/selector/contract';
+import { updateContract } from '@/shared/store/slice/contract';
+import { toastError } from '@/shared/utils/toast';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { fetchAttestation } from '@/api/eas-thirdweb';
+import { useActiveAccount } from 'thirdweb/react';
 
 type PropTypes = {
   id: string | undefined;
@@ -14,33 +19,61 @@ const getTitle = (isFound: boolean, isSigned: boolean) => {
 };
 
 export const ReadyContract = ({ id }: PropTypes) => {
-  const [contractText, setContractText] = useState('');
-  const [isSigned, setIsSigned] = useState(false);
+  const [signees, setSignees] = useState([]);
   const [isFound, setIsFound] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const account = useActiveAccount();
   const router = useRouter();
-  
-  useEffect(() => {
-    (async () => {
-        // @ts-ignore
-      const currentContract = await fetchAttestation(id);
-        // @ts-ignore
-      setContractText(currentContract.contract);
-      const isSigned = false; 
-      setIsSigned(isSigned);
-      setIsFound(true);
-    })()
-  }, []);
+  const dispatch = useAppDispatch();
+  const contract = useAppSelector(contractSelector);
 
-  const handleClick = () => {
+  useEffect(() => {
+    fetchAttestation(id).then((contract) => {
+      dispatch(
+        updateContract({
+          data: {
+            uid: id as string,
+            name: contract.name,
+            text: contract.contract,
+          },
+        }),
+      );
+      setSignees([
+        {
+          id: contract.recipient,
+          fullname: contract.name,
+          dateSigned: contract.createdAt,
+        },
+      ]);
+      setIsLoading(false);
+      setIsFound(true);
+    }, console.error);
+  }, [id, dispatch]);
+
+  const handleClick = async () => {
+    // Redirect to home page
     if (!isFound) {
-      router.push('/qr/paste', { scroll: false });
-      return;
+      router.push('/', { scroll: false });
+    } else if (signees[0].id === account?.address) {
+      // Render QR
+      router.push('/contract/share', { scroll: false });
+    } else if (signees.length >= 2) {
+      // Share link
+      if (window.isSecureContext) {
+        await navigator.clipboard.writeText(currentContract.id);
+        toastInfo('Link has been copied');
+      } else {
+        toastError('Can not access clipboard');
+      }
+    } else {
+      // Request signing
+      router.push('/auth', { scroll: false });
     }
-    router.push('/contract/share', { scroll: false });
-    toastSuccess(isSigned ? 'Shared' : 'Signed');
   };
 
-  const submitButton = <Button onClick={handleClick} title={getTitle(isFound, isSigned)} />;
+  const submitButton = (
+    <Button onClick={handleClick} title={getTitle(isFound, signees.length > 1)} />
+  );
 
   return (
     <MainWrapper title="Contract" submitButton={submitButton}>
@@ -48,9 +81,16 @@ export const ReadyContract = ({ id }: PropTypes) => {
         style={{ scrollbarWidth: 'none' }}
         className="resize-none h-full sm:h-64 sm:max-h-64 w-full p-2 border-0 outline-0 rounded border-none overflow-y-scroll text-black text-2xl"
       >
-        {isFound ? contractText : <div className="w-full text-center">Contract not found</div>}
+        {isLoading && (
+          <div className="flex flex-col gap-3 text-black">
+            <span className="text-center">Loading attestation...</span>
+            <Spinner />
+          </div>
+        )}
+        {isFound && <div>{contract.text}</div>}
+        {!isFound && !isLoading && <div className="w-full text-center">Contract not found</div>}
       </div>
-      <Signees />
+      <Signees signees={signees} />
     </MainWrapper>
   );
 };
