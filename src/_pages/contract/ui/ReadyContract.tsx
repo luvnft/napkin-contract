@@ -46,7 +46,10 @@ export const ReadyContract = ({ id }: PropTypes) => {
   const submitButton = (
     <Button
       onClick={() => {
-        if (!isFound) router.push('/qr/paste', { scroll: false });
+        if (!isFound) {
+          router.push('/qr/paste', { scroll: false });
+          return;
+        }
         if (!isSigned) {
           const newSignee: Signee = {
             ...currentUser,
