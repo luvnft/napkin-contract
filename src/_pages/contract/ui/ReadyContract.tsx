@@ -15,6 +15,11 @@ type PropTypes = {
   id: string | undefined;
 };
 
+const getTitle = (isFound: boolean, isSigned: boolean) => {
+  if (!isFound) return 'Back';
+  return isSigned ? 'Shared' : 'Signed';
+};
+
 export const ReadyContract = ({ id }: PropTypes) => {
   const [contractText, setContractText] = useState('');
   const [isSigned, setIsSigned] = useState(false);
@@ -41,6 +46,7 @@ export const ReadyContract = ({ id }: PropTypes) => {
   const submitButton = (
     <Button
       onClick={() => {
+        if (!isFound) router.push('/qr/paste', { scroll: false });
         if (!isSigned) {
           const newSignee: Signee = {
             ...currentUser,
@@ -57,7 +63,7 @@ export const ReadyContract = ({ id }: PropTypes) => {
 
         toastSuccess(isSigned ? 'Shared' : 'Signed');
       }}
-      title={isSigned ? 'Share' : 'Sign'}
+      title={getTitle(isFound, isSigned)}
     />
   );
 
