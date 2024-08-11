@@ -1,4 +1,4 @@
-// @ts-nocheck_
+// @ts-nocheck
 import { fetchAttestation, fetchSignatureAttestations } from '@/api/eas-thirdweb';
 import { Button, MainWrapper, Signees, Spinner } from '@/shared/components';
 import { useAppDispatch, useAppSelector } from '@/shared/store/hook';
