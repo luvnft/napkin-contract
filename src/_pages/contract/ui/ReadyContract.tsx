@@ -17,7 +17,7 @@ type PropTypes = {
 
 const getTitle = (isFound: boolean, isSigned: boolean) => {
   if (!isFound) return 'Back';
-  return isSigned ? 'Shared' : 'Signed';
+  return isSigned ? 'Share' : 'Signe';
 };
 
 export const ReadyContract = ({ id }: PropTypes) => {
