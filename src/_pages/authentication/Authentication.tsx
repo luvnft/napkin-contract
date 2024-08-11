@@ -55,10 +55,11 @@ export const Authentication = () => {
   );
 
   return (
-    <MainWrapper title="Authentication" submitButton={submitButton}>
+    <MainWrapper title="Sign the contract" submitButton={submitButton}>
       <div className="flex flex-col items-center justify-start p-10 gap-7">
         <ConnectButton
           client={client}
+          theme={'dark'}
           appMetadata={{
             name: appName,
             url: appUrl,
@@ -89,14 +90,14 @@ export const Authentication = () => {
         )}
         {!isLoading && attestationUid ? (
           <span className="text-black">
-            Attestation created, click{' '}
+            Contract has been recorded{' '}
             <a
               href={`https://base-sepolia.easscan.org/attestation/view/${attestationUid}`}
               className="text-indigo-300 hover:text-indigo-500 underline"
             >
-              here
-            </a>{' '}
-            to open it.
+              on-chain
+            </a>
+            .
           </span>
         ) : null}
       </div>
